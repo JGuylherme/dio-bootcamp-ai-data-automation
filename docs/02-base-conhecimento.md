@@ -7,8 +7,8 @@ Descreva se usou os arquivos da pasta `data`, por exemplo:
 | Arquivo | Formato | Utilização no Agente |
 |---------|---------|---------------------|
 | `historico_atendimento.csv` | CSV | Contextualizar interações anteriores |
-| `perfil_investidor.json` | JSON | Personalizar recomendações |
-| `produtos_financeiros.json` | JSON | Sugerir produtos adequados ao perfil |
+| `perfil_investidor.json` | JSON | Personalizar as explicações sobre dúvidas e  necessidades do cliente |
+| `produtos_financeiros.json` | JSON |Conhecer os produtos disponíveis para explicar ao cliente |
 | `transacoes.csv` | CSV | Analisar padrão de gastos do cliente |
 
 > [!TIP]
@@ -20,7 +20,7 @@ Descreva se usou os arquivos da pasta `data`, por exemplo:
 
 > Você modificou ou expandiu os dados mockados? Descreva aqui.
 
-[Sua descrição aqui]
+Os arquivos produtos_financeiros.json e transacoes.csv foram atualizados para melhorar o realismo e a usabilidade dos dados. No arquivo de produtos financeiros, as informações foram padronizadas e ampliadas com novos tipos de investimentos. Já no arquivo de transações, foram adicionados mais meses de dados, mantendo valores fixos para receitas e despesas recorrentes e valores variáveis para gastos do dia a dia, simulando um comportamento financeiro mais próximo do real.
 
 ---
 
@@ -29,12 +29,26 @@ Descreva se usou os arquivos da pasta `data`, por exemplo:
 ### Como os dados são carregados?
 > Descreva como seu agente acessa a base de conhecimento.
 
-[ex: Os JSON/CSV são carregados no início da sessão e incluídos no contexto do prompt]
+```python
+import pandas as pd
+import json
+
+# CSVs
+historico = pd.read_csv('data/historico_atendimento.csv')
+transacoes = pd.read_csv('data/transacoes.csv')
+
+# JSONs
+with open('data/perfil_investidor.json', 'r', encoding='utf-8') as f:
+    perfil = json.load(f)
+
+with open('data/produtos_financeiros.json', 'r', encoding='utf-8') as f:
+    produtos = json.load(f)
+```
 
 ### Como os dados são usados no prompt?
 > Os dados vão no system prompt? São consultados dinamicamente?
 
-[Sua descrição aqui]
+São carregados dinamicamente a partir dos arquivos (como transacoes.csv e produtos_financeiros.json) e utilizados conforme necessário durante a execução. Isso permite que o agente consulte informações atualizadas, personalize respostas com base no perfil do usuário e analise o histórico financeiro de forma mais eficiente, sem sobrecarregar o prompt com grandes volumes de dados.
 
 ---
 
